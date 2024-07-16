@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <style>
+    /* Reset some default styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Body styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+    }
+
+    /* Edit profile container */
+    .edit-profile-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    /* Form styles */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 1px solid #ccd0d5;
+      border-radius: 4px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Profile picture upload */
+    .profile-picture-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .profile-picture {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 16px;
+    }
+
+    .profile-picture-input {
+      font-size: 16px;
+    }
+
+    /* Save changes button */
+    .save-changes-btn {
+      display: block;
+      width: 100%;
+      padding: 8px 16px;
+      background-color: #1877f2;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .save-changes-btn:hover {
+      background-color: #1366d6;
+    }
+  </style>
+</head>
+<body>
+  <div class="edit-profile-container">
+    <form id="edit-profile-form">
+      <div class="profile-picture-container">
+        <img class="profile-picture" src="profile_picture.jpg" alt="Profile Picture">
+        <input type="file" class="profile-picture-input" accept="image/*">
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="John Doe">
+      </div>
+      <div class="form-group">
+        <label for="occupation">Occupation</label>
+        <input type="text" id="occupation" name="occupation" value="Software Engineer">
+      </div>
+      <div class="form-group">
+        <label for="about">About</label>
+        <textarea  </div>
+      <button type="submit" class="save-changes-btn">Save Changes</button>
+    </form>
+  </div>
+
+  <script>
+    // Fetch user data from local storage and populate the form
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+      document.querySelector('.profile-picture').src = user.profilePicture || 'profile_picture.jpg';
+      document.querySelector('#name').value = user.name;
+      document.querySelector('#occupation').value = user.occupation;
+      document.querySelector('#about').value = user.about;
+    }
+
+    // Handle form submission and save changes to local storage
+    const form = document.getElementById('edit-profile-form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const updatedUser = {
+        name: formData.get('name'),
+        occupation: formData.get('occupation'),
+        about: formData.get('about'),
+        profilePicture: formData.get('profile-picture')
+      };
+
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      window.location.href = 'user.html';
+    });
+  </script>
+</body>
+</html>

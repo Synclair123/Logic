@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Post - Caption Only</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+    }
+
+    .post-form {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-input {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .post-btn {
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .post-btn:hover {
+        background-color: #555;
+    }
+</style>
+</head>
+<body>
+    <div class="post-form">
+        <h2>Create a New Post</h2>
+        <textarea class="post-input" placeholder="Write your caption here..." rows="4"></textarea>
+        <button class="post-btn" onclick="createPost()">Post</button>
+    </div>
+
+    <script>
+        function createPost() {
+            const caption = document.querySelector('.post-input').value;
+
+            if (caption.trim() !== '') {
+                const post = {
+                    caption: caption
+                };
+
+                // Save post to local storage
+                let posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push(post);
+                localStorage.setItem('posts', JSON.stringify(posts));
+
+                // Redirect back to homepage after creating post
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Please add a caption before posting.');
+            }
+        }
+    </script>
+</body>
+</html>

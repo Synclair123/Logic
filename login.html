@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    /* Responsive CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1e90ff, #00bfff);
+    }
+/* Disable Zooming */
+html,
+body {
+  touch-action: pan-x pan-y; /* Allow horizontal and vertical scrolling */
+  width: 100%;              /* Ensure full width usage */
+  height: 100%;             /* Ensure full height usage */
+  overflow-x: hidden;        /* Prevent horizontal scrolling if not needed */
+}
+
+meta[name="viewport"] {
+  content: width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no; 
+}
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-box {
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-box label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .login-box button {
+      background-color: #1e90ff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .login-box button:hover {
+      background-color: #00bfff;
+    }
+
+    .login-box a {
+      display: block;
+      text-align: right;
+      color: #1e90ff;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .login-box a:hover {
+      color: #00bfff;
+    }
+
+    @media (max-width: 768px) {
+      .login-box {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-box">
+      <h2>Login</h2>
+      <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+        <a href="reset.html">Forgot Password?</a>
+        <a href="signup.html">Sign Up</a>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('login-form');
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Get the username and password values from the form
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Retrieve user data from local storage
+      const userData = localStorage.getItem("userData");
+      if (userData) {
+        const users = JSON.parse(userData);
+        for (let i = 0; i < users.length; i++) {
+          if (users[i].username === username && users[i].password === password) {
+            // Redirect to dashboard page
+            window.location.href = 'dashboard.html';
+            return;
+          }
+        }
+      }
+
+      // If user data not found or incorrect credentials
+      alert("Invalid username or password.");
+    });
+  </script>
+</body>
+</html>

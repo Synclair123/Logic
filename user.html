@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <style>
+    /* Reset some default styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Body styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+    }
+
+    /* Profile container */
+    .profile-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    /* Profile header */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    /* Profile picture */
+    .profile-picture {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 16px;
+    }
+
+    /* User details */
+    .user-details h2 {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .user-details p {
+      color: #65676b;
+      font-size: 16px;
+    }
+
+    /* Edit profile button */
+    .edit-profile-btn {
+      display: block;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background-color: #1877f2;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .edit-profile-btn:hover {
+      background-color: #1366d6;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="profile-header">
+      <img class="profile-picture" src="profile_picture.jpg" alt="Profile Picture">
+      <div class="user-details">
+        <h2>John Doe</h2>
+        <p>Software Engineer</p>
+      </div>
+    </div>
+    <p>About me: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget aliquam nisl nisl eget nisl.</p>
+    <a href="edit_profile.html" class="edit-profile-btn">Edit Profile</a>
+  </div>
+
+  <script>
+    // Fetch user data from local storage and update the profile
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+      document.querySelector('.profile-picture').src = user.profilePicture || 'profile_picture.jpg';
+      document.querySelector('.user-details h2').textContent = user.name;
+      document.querySelector('.user-details p').textContent = user.occupation;
+      document.querySelector('.profile-container p').textContent = user.about;
+    }
+  </script>
+</body>
+</html>

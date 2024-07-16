@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password</title>
+  <style>
+    /* Responsive CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1e90ff, #00bfff);
+    }
+/* Disable Zooming */
+html,
+body {
+  touch-action: pan-x pan-y; /* Allow horizontal and vertical scrolling */
+  width: 100%;              /* Ensure full width usage */
+  height: 100%;             /* Ensure full height usage */
+  overflow-x: hidden;        /* Prevent horizontal scrolling if not needed */
+}
+
+meta[name="viewport"] {
+  content: width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no; 
+}
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .reset-box {
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .reset-box h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .reset-box label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .reset-box input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .reset-box button {
+      background-color: #1e90ff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .reset-box button:hover {
+      background-color: #00bfff;
+    }
+
+    .reset-box a {
+      display: block;
+      text-align: right;
+      color: #1e90ff;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .reset-box a:hover {
+      color: #00bfff;
+    }
+
+    @media (max-width: 768px) {
+      .reset-box {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="reset-box">
+      <h2>Reset Password</h2>
+      <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="backupWord">Backup Word:</label>
+        <input type="text" id="backupWord" name="backupWord" required>
+
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" required>
+
+        <label for="confirmNewPassword">Confirm New Password:</label>
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+
+        <button type="submit" onclick="resetPassword()">Reset Password</button>
+        <a href="login.html">Back to Login</a>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function resetPassword() {
+      var username = document.getElementById("username").value;
+      var backupWord = document.getElementById("backupWord").value;
+      var newPassword = document.getElementById("newPassword").value;
+      var confirmNewPassword = document.getElementById("confirmNewPassword").value;
+
+      // Check if new password and confirm password match
+      if (newPassword !== confirmNewPassword) {
+        alert("New passwords do not match.");
+        return;
+      }
+
+      // Retrieve user data from local storage
+      var userData = localStorage.getItem("userData");
+      var users = userData ? JSON.parse(userData) : [];
+
+      // Find the user by username and backup word
+      var user = users.find(function(u) {
+        return u.username === username && u.backupWord === backupWord;
+      });
+
+      if (user) {
+        // Update the user's password
+        user.password = newPassword;
+
+        // Save the updated user data to local storage
+        localStorage.setItem("userData", JSON.stringify(users));
+
+        alert("Password reset successful!");
+        window.location.href = "login.html";
+      } else {
+        alert("Invalid username or backup word.");
+      }
+    }
+  </script>
+</body>
+</html>

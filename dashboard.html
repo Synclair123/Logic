@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strip - Social App</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100vh;
+    }
+/* Disable Zooming */
+html,
+body {
+  touch-action: pan-x pan-y; /* Allow horizontal and vertical scrolling */
+  width: 100%;              /* Ensure full width usage */
+  height: 100%;             /* Ensure full height usage */
+  overflow-x: hidden;        /* Prevent horizontal scrolling if not needed */
+}
+
+meta[name="viewport"] {
+  content: width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no; 
+}
+
+    .header {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #333;
+        color: #fff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .header i {
+        margin: 0 5px;
+        font-size: 24px;
+        cursor: pointer;
+        color: skyblue;
+    }
+
+    .posts {
+        padding: 20px;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .post {
+        position: relative;
+        background: skyblue;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+
+    .post-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-info img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .user-info span {
+        font-weight: bold;
+    }
+
+    .post-icons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .icon {
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .likes {
+        display: flex;
+        align-items: center;
+        color: #333;
+    }
+
+    .comment-section {
+        display: none;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .comments-popup {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        display: none;
+    }
+
+    .comments-popup textarea {
+        width: 100%;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+
+</style>
+</head>
+<body>
+    <div class="posts">
+        <!-- Posts will be dynamically loaded here using JavaScript -->
+    </div>
+
+    <div class="header">
+        <i class="fas fa-home" onclick="window.location.href = 'dashboard.html'"></i>
+        <i class="fas fa-search" onclick="window.location.href = 'search.html'"></i>
+        <i class="fas fa-plus" onclick="window.location.href = 'post.html'"></i>
+        <i class="fas fa-bell" onclick="window.location.href = 'notifications.html'"></i>
+        <i class="fas fa-comment" onclick="toggleCommentsPopup(this)"></i>
+    </div>
+
+    <div class="post-form">
+        <div class="user-info">
+            <img src="user-profile-picture.jpg" alt```html
+="Profile Picture">
+            <span>User Name</span>
+        </div>
+        <!-- Your post form content goes here -->
+    </div>
+
+    <div class="comments-popup">
+        <textarea placeholder="Write your comment..."></textarea>
+        <i class="fas fa-arrow-circle-right icon" onclick="submitComment(this)"></i>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const postsContainer = document.querySelector('.posts');
+
+            // Load posts from local storage
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+            // Display posts in the .posts container
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <div class="user-info">
+                            <img src="${post.profilePicture}" alt="Profile Picture">
+                            <span>${post.username}</span>
+                        </div>
+                    </div>
+                    <p>${post.caption}</p>
+                    <div class="post-icons">
+                        <div class="likes">
+                            <i class="icon fas fa-heart" onclick="likePost(this)"></i>
+                            <span class="like-count">0</span>
+                        </div>
+                        <i class="icon fas fa-comment" onclick="toggleComments(this)"></i>
+                    </div>
+                    <div class="comment-section">
+                        <!-- Comments will be displayed here -->
+                    </div>
+                `;
+                postsContainer.appendChild(postElement);
+            });
+        });
+
+        function likePost(icon) {
+            const likeCount = icon.nextElementSibling;
+            likeCount.textContent = parseInt(likeCount.textContent) + 1;
+            icon.classList.add('liked');
+            icon.removeEventListener('click', likePost);
+        }
+
+        function toggleComments(icon) {
+            const commentSection = icon.parentElement.nextElementSibling;
+            commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleCommentsPopup(icon) {
+            const commentsPopup = document.querySelector('.comments-popup');
+            commentsPopup.style.display = commentsPopup.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function submitComment(icon) {
+            const commentInput = document.querySelector('.comments-popup textarea');
+            const newComment = commentInput.value.trim();
+            if (newComment !== '') {
+                // Add new comment logic here
+                console.log('New Comment:', newComment);
+                commentInput.value = ''; // Clear the input after submitting
+            }
+        }
+    </script>
+</body>
+</html>
